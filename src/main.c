@@ -16,6 +16,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <fcntl.h>   
+#include <sys/stat.h> 
+
 
 /*
   Function Declarations for builtin shell commands:
@@ -23,6 +26,9 @@
 int lsh_cd(char **args);
 int lsh_help(char **args);
 int lsh_exit(char **args);
+int lsh_pwd(char **args);
+int lsh_echo(char **args);
+int lsh_touch(char **args);
 
 /*
   List of builtin commands, followed by their corresponding functions.
@@ -30,13 +36,19 @@ int lsh_exit(char **args);
 char *builtin_str[] = {
   "cd",
   "help",
-  "exit"
+  "exit",
+  "pwd",
+  "echo",
+  "touch"
 };
 
 int (*builtin_func[]) (char **) = {
   &lsh_cd,
   &lsh_help,
-  &lsh_exit
+  &lsh_exit,
+  &lsh_pwd,
+  &lsh_echo,
+  &lsh_touch
 };
 
 int lsh_num_builtins() {
@@ -59,6 +71,46 @@ int lsh_cd(char **args)
   } else {
     if (chdir(args[1]) != 0) {
       perror("lsh");
+    }
+  }
+  return 1;
+}
+
+int lsh_pwd(char **args)
+{
+  char cwd[1024];
+  if (getcwd(cwd, sizeof(cwd)) != NULL) {
+    printf("This is pwd command\n");
+    printf("%s\n", cwd);
+  } else {
+    perror("lsh");
+  }
+  return 1;
+}
+
+int lsh_echo(char **args)
+{
+  int i = 1;
+
+  while(args[i]) {
+    printf("%s ", args[i]);
+    i++;
+  }
+  printf("\n");  
+  return 1; 
+}
+
+int lsh_touch(char **args)
+{
+  if (args[1] == NULL) {
+    fprintf(stderr, "lsh: expected argument to \"touch\"\n");
+  } else {
+    int file_descriptor = open(args[1], O_CREAT | O_WRONLY, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+    printf("This is touch command\n");
+    if (file_descriptor == -1) {
+      perror("lsh");
+    } else {
+      close(file_descriptor); 
     }
   }
   return 1;
