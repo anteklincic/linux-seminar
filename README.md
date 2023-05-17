@@ -1,4 +1,4 @@
-LSH
+LSH linux
 ===
 
 LSH is a simple implementation of a shell in C, and it is the subject of a
@@ -6,6 +6,8 @@ tutorial on [my website][1].  It demonstrates the basics of how a shell works.
 That is: read, parse, fork, exec, and wait.  Since its purpose is demonstration
 (not feature completeness or even fitness for casual use), it has many
 limitations, including:
+
+* dodan echo, pwd, touch
 
 * Commands must be on a single line.
 * Arguments must be separated by whitespace.
