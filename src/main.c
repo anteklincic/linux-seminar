@@ -80,7 +80,7 @@ int lsh_pwd(char **args)
 {
   char cwd[1024];
   if (getcwd(cwd, sizeof(cwd)) != NULL) {
-    printf("This is pwd command\n");
+    printf("This is pwd command:\n");
     printf("%s\n", cwd);
   } else {
     perror("lsh");
@@ -105,7 +105,7 @@ int lsh_touch(char **args)
   if (args[1] == NULL) {
     fprintf(stderr, "lsh: expected argument to \"touch\"\n");
   } else {
-    int file_descriptor = open(args[1], O_CREAT | O_WRONLY, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+    int file_descriptor = open(args[1], O_CREAT, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
     printf("This is touch command\n");
     if (file_descriptor == -1) {
       perror("lsh");
