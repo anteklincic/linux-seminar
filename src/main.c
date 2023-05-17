@@ -93,11 +93,16 @@ int lsh_echo(char **args)
   int i = 1;
 
   while(args[i]) {
-    printf("%s ", args[i]);
+    if (args[i][0] == '"' && args[i][strlen(args[i])-1] == '"') {
+      args[i][strlen(args[i])-1] = '\0';
+      printf("%s ", args[i]+1);
+    } else {
+      printf("%s ", args[i]);
+    }
     i++;
   }
-  printf("\n");  
-  return 1; 
+  printf("\n");
+  return 1;
 }
 
 int lsh_touch(char **args)

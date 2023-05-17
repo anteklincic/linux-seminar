@@ -1,5 +1,5 @@
 all: src/main.c
-	gcc -o main $<
+	gcc -o lsh $<
 
 clean:
-	rm -f main
+	rm -f lsh
